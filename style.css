@@ -1,0 +1,84 @@
+body {
+    font-size: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+/*first page where choose*/
+.firstPage{
+    background-color: rgb(27, 223, 125);
+    height:100vh;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    display: none;/**/
+}
+
+/*button and form*/
+.btn{
+    width:300px;
+    height: 100px;
+    background-color: rgb(221, 14, 210);
+    color: white;
+    font-size: 25px;
+    margin: 20px;
+}
+
+.nameOfPlayer{
+    width:300px;
+    height: 100px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    font-size: 25px;
+    margin: 20px;
+    text-align: center;
+}
+
+/*main field*/
+.gameStartSecondPage{
+    background-color: rgb(240, 204, 204);
+    display: flex;
+}
+
+.attributesLiveScore{
+    margin: 20px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#gameField{
+    background-color: rgb(255, 255, 255);
+    margin: 20px;
+    border:10px solid rgb(7, 153, 109);
+    display: flex;
+    
+}
+
+/*attributes*/
+#score{
+    padding: 30px;
+}
+
+#lives > img{
+    padding: 30px;
+    width:70px;
+}
+
+
+/*end game*/
+.endGameThirdPage{
+    background-color: rgb(245, 195, 133);
+    height:100vh;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    display: none;/**/
+}
