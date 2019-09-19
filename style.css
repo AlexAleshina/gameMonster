@@ -8,24 +8,46 @@ body {
 
 /*button and form*/
 .btn{
-    width:260px;
-    height: 70px;
-    background-color: rgb(22, 6, 21);
-    color: white;
+    width:160px;
+    height: 50px;
+    background-color: rgb(3, 4, 73);
+    color: rgb(209, 209, 217);
     font-size: 25px;
+    text-decoration: none;
+    font-weight: 700;
     margin: 10px;
     border-radius: 10px;
-    box-shadow: none;
+    border: none;
+    text-shadow: 0 -1px 2px rgba(0,0,0,.2);
+    outline: none;
+    background: linear-gradient(rgb(110,112,120), rgb(81,81,86)) rgb(110,112,120);
+    box-shadow:
+    0 1px rgba(255,255,255,.2) inset,
+    0 3px 5px rgba(0,1,6,.5),
+    0 0 1px 1px rgba(0,1,6,.2);
+    transition: .2s ease-in-out;
+}
+.btn:hover:not(:active) {
+  background: linear-gradient(rgb(126,126,134), rgb(70,71,76)) rgb(126,126,134);
+}
+.btn:active {
+  top: 1px;
+  background: linear-gradient(rgb(109, 110, 112), rgb(56,57,62)) rgb(76,77,82);
+  box-shadow:
+   0 0 1px rgba(0,0,0,.5) inset,
+   0 2px 3px rgba(0,0,0,.5) inset,
+   0 1px 1px rgba(255,255,255,.1);
 }
 
 
 
 /*main field*/
-.gameStartSecondPage{
-    background:url(back.jpg);
+.gameStartMainPage{
+    background: linear-gradient(45deg, rgb(68, 68, 68), rgb(216, 231, 238));
     display: flex;
-    color: aliceblue;
-    
+    color: rgb(209, 209, 217);;
+    height: 100vh;
+    align-items: flex-start;
 }
 
 .attributesLiveScore{
@@ -37,13 +59,18 @@ body {
     align-items: center;
 }
 #gameField{
-    background-color: rgb(255, 255, 255);
     margin: 20px;
-    border:10px solid rgb(7, 153, 109);
+    border:5px solid rgb(35, 37, 37);
+    border-radius: 10px;
     display: flex;
+    box-shadow:
+   0 0 1px rgba(0,0,0,.5) inset,
+   0 2px 3px rgba(0,0,0,.5) inset,
+   0 1px 1px rgba(255,255,255,.1);
     
 }
 #canvas{
+    background: url("back.jpg") 99% 60% no-repeat;
     
 }
 
@@ -53,25 +80,26 @@ body {
 }
 
 .scorePoint{
-    font-size: 2.5em;
-    padding: 30px;
+    font-size: 2em;
+    padding: 10px;
 }
 
 #lives > img{
     padding: 10px;
-    width:70px;
+    width:30px;
 }
 
 
 /*end game*/
 .endGameThirdPage{
-    background-color: rgb(245, 195, 133);
+    background: linear-gradient(45deg, rgb(68, 68, 68), rgb(216, 231, 238));
+    display: flex;
+    color: rgb(209, 209, 217);;
     height:100vh;
     width: auto;
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    display: none;/**/
+    display: none;
 }

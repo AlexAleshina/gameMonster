@@ -2,7 +2,7 @@ function updateScore(score) {
     document.getElementById("score").innerHTML = score;
 }
 
-function updateLives(lives){ 
+function updateLives(lives) {
     const livesContainer = document.getElementById("lives");
     livesContainer.innerHTML = '';
 
@@ -13,14 +13,36 @@ function updateLives(lives){
     }
 }
 
+function hideStart() {
+    var end = document.getElementsByClassName("gameStartMainPage")[0];
+    var endHidden = end.style.display = "none";
+}
+function showStart() {
+    var end = document.getElementsByClassName("gameStartMainPage")[0];
+    var endHidden = end.style.display = "flex";
+}
+function hideEnd() {
+    var end = document.getElementsByClassName("endGameThirdPage")[0];
+    var endHidden = end.style.display = "none";
+}
+
+function showEnd() {
+    var end = document.getElementsByClassName("endGameThirdPage")[0];
+    var endHidden = end.style.display = "flex";
+}
+
+
+
+var increase = 30;
+
 
 class Player {
     constructor(context) {
         this.x = 50;
         this.startY = 300;
         this.y = 0;
-        this.height = 130;
-        this.width = 130;
+        this.height = 110;
+        this.width = 110;
         this.image = new Image();
         this.image.src = "orangeMonster.png";
     }
@@ -44,24 +66,29 @@ class EatableObject {
         this.y = startY;
         this.startX = startX;
         this.show = true;
-        this.height = 70;
-        this.width = 70;
+        this.height = 65;
+        this.width = 65;
+        this.deleteMe = false;
     }
 
     update(time) {
-        this.x = this.startX - 80 * time;
+        if(this.x < -65){
+            this.deleteMe = true;
+        };
+        this.x = this.startX - (2* increase) * time;
     }
 
     draw(context) {
-        if (this.show == true && this.x >= 0 && this.x < 1100 && this.y >= 0 && this.y <= 700) {
+        if (this.show == true && this.x >= -65 && this.x < 1100 && this.y >= 0 && this.y <= 700) {
             context.drawImage(this.image, this.x, this.y, this.height, this.width);
         }
     }
 
     collide() {
         this.show = false;
-        score = score + 5;
+        score = score + 10;
         updateScore(score);
+        this.deleteMe = true;
     }
 }
 
@@ -73,24 +100,32 @@ class NotEat {
         this.y = startY;
         this.startX = startX;
         this.show = true;
-        this.height = 70;
-        this.width = 70;
+        this.height = 60;
+        this.width = 60;
+        this.deleteMe = false;
     }
 
     update(time) {
-        this.x = this.startX - 80 * time;
+        if(this.x < -60){
+            this.deleteMe = true;
+        };
+        this.x = this.startX - (increase * 2) * time;
     }
 
     draw(context) {
-        if (this.show == true && this.x >= 0 && this.x < 1100 && this.y >= 0 && this.y <= 700) {
+        if (this.show == true && this.x >= -60 && this.x < 1100 && this.y >= 0 && this.y <= 700) {
             context.drawImage(this.image, this.x, this.y, this.height, this.width);
         }
     }
     collide() {
         this.show = false;
-        this.show = false;
-        lives --;
+        this.deleteMe = true;
+        lives--;
         updateLives(lives);
+        if (lives <= 0) {
+            hideStart();
+            showEnd();
+        };
 
     }
 }
@@ -104,29 +139,39 @@ class Enemy {
         this.startY = startY;
         this.startX = startX;
         this.show = true;
-        this.height = 100;
-        this.width = 100;
+        this.height = 90;
+        this.width = 90;
+        this.deleteMe = false;
     }
 
     update(time, player) {
-        this.x = this.startX - 80 * time;
+        if(this.x < -90){
+            this.deleteMe = true;
+        };
+        this.x = this.startX - (increase * 2) * time;
 
-        if (player.y > this.startY){
-            this.startY += 1;
-        } else if(player.y < this.startY){
-            this.startY -= 1;
+        if (player.y > this.startY) {
+            this.startY += 0.7;
+        } else if (player.y < this.startY) {
+            this.startY -= 0.7;
         }
 
         this.y = this.startY + 5 * Math.sin(1 * Math.PI * time);
     }
 
     draw(context) {
-        if (this.show == true && this.x >= 0 && this.x < 1100) {
+        if (this.show == true && this.x >= -90 && this.x < 1100) {
             context.drawImage(this.image, this.x, this.y, this.height, this.width);
         }
     }
     collide() {
         this.show = false;
+        this.deleteMe = true;
+        lives -= 3;
+        if (lives <= 0) {
+            hideStart();
+            showEnd();
+        };
         //alert("die")
         //score[0] += 10;
 
@@ -142,22 +187,26 @@ class Heart {
         this.startY = startY;
         this.startX = startX;
         this.show = true;
-        this.height = 80;
-        this.width = 80;
+        this.height = 50;
+        this.width = 50;
+        this.deleteMe = false;
     }
 
     update(time) {
-        this.x = this.startX - 50 * time;
+        if(this.x < -50){
+            this.deleteMe = true;
+        };
+        this.x = this.startX - increase * time;
         this.y = this.startY + 1 * Math.sin(4 * Math.PI * time);
     }
 
     draw(context) {
-        if (this.show == true && this.x >= 0 && this.x < 1100 && this.y >= 0 && this.y <= 700) {
-            
-            context.save();
-            context.translate( this.x, this.y);
+        if (this.show == true && this.x >= -60 && this.x < 1100 && this.y >= 0 && this.y <= 700) {
 
-            const scale = 1 + (Math.abs((this.x / 3) % 10  - 5)/ 40);
+            context.save();
+            context.translate(this.x, this.y);
+
+            const scale = 1 + (Math.abs((this.x / 3) % 10 - 5) / 40);
 
             context.scale(scale, scale);
 
@@ -169,19 +218,12 @@ class Heart {
     }
     collide() {
         this.show = false;
-        if(lives < 3){
-        lives ++;
-        updateLives(lives);
+        this.deleteMe = true;
+        if (lives < 3) {
+            lives++;
+            updateLives(lives);
         }
-        /*var parent = document.getElementById("lives");
-        var heart = document.getElementById("lives").image;
-        if(heart < 3){
-        var x = document.createElement("IMG");
-        x.src = "heart.png";
-        parent.appendChild(x);
-        }
-        */
-        
+
     }
 }
 
@@ -192,7 +234,7 @@ window.onload = function () {
     let canvas = document.getElementById("canvas");
     let context = canvas.getContext("2d");
     //
-    let mapLength = 2 * 1100;
+    let mapLength = 5 * 1100;
 
     function generateFood(src) {
         let items = [];
@@ -207,7 +249,7 @@ window.onload = function () {
 
     function generateMen(src) {
         let items = [];
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 10; i++) {
             let x = 1100 + Math.random() * mapLength;
             let y = Math.random() * 700 - 50;
             let item = new NotEat(src, x, y);
@@ -218,7 +260,7 @@ window.onload = function () {
 
     function generateHearts(src) {
         let items = [];
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 3; i++) {
             let x = 1100 + Math.random() * mapLength;
             let y = Math.random() * 700 - 50;
             let item = new Heart(src, x, y);
@@ -270,14 +312,33 @@ window.onload = function () {
         // here you can draw EVERYTHING!!!
         player.update(time);
         player.draw(context);
+        
+        function processObjects(objectsArray) {
+            for (let i = 0; i < objectsArray.length; i++) {
+                objectsArray[i].update(time, player);
+                objectsArray[i].draw(context);
+                if (isCollission(player, objectsArray[i])) {
+                    objectsArray[i].collide();
+                    objectsArray.splice(i, 1);
+                };
+            }
+        }
+
+        processObjects(burgers);
+        processObjects(vegetables);
+        processObjects(men);
+        processObjects(enemy);
+        processObjects(heart);
+
+
+        /*
 
         for (let i = 0; i < burgers.length; i++) {
             burgers[i].update(time);
             burgers[i].draw(context);
             if (isCollission(player, burgers[i])) {
                 burgers[i].collide();
-                burgers.splice(i, 1);
-
+                //burgers.splice(i, 1);
             }
         }
 
@@ -287,7 +348,6 @@ window.onload = function () {
             if (isCollission(player, vegetables[i])) {
                 vegetables[i].collide();
                 vegetables.splice(i, 1);
-                //context.clearRect(vegetables[i].x, vegetables[i].y, 70, 70);
             };
         }
 
@@ -296,16 +356,14 @@ window.onload = function () {
             men[i].draw(context);
             if (isCollission(player, men[i])) {
                 men[i].collide();
-                men.splice(i, 1);
             };
         }
 
         for (let i = 0; i < enemy.length; i++) {
-            enemy[i].update(time,player);
+            enemy[i].update(time, player);
             enemy[i].draw(context);
             if (isCollission(player, enemy[i])) {
                 enemy[i].collide();
-                enemy.splice(i, 1);
             };
         }
 
@@ -314,21 +372,45 @@ window.onload = function () {
             heart[i].draw(context);
             if (isCollission(player, heart[i])) {
                 heart[i].collide();
-                heart.splice(i, 1);
             };
         }
 
+        */
+
         setTimeout(gameLoop, 20);
         time += 0.020;
+        levelUpdate();
 
+        function levelUpdate() {
+            debugger
+            if (score >= 250) {
+                time += 0.045;
+            } else if (score >= 200) {
+                time += 0.040;
+            } else if (score >= 150) {
+                time += 0.035;
+            } else if (score >= 100) {
+                time += 0.030;
+            } else if (score >= 50) {
+                time += 0.025;
+            } else if (score >= 20) {
+                time += 0.023;
+            } 
+        }
+        
     }
 
     var start = document.getElementById("start");
-    console.log(start);
-    start.addEventListener("click", gameLoop);
+    start.addEventListener("click", function() {
+        gameLoop();
+    });
 
     var startAgain = document.getElementById("againStart");
-    startAgain.addEventListener("click", gameLoop);
+    startAgain.addEventListener("click", function(){
+        gameLoop();
+        location.reload();
+    });
+
 
     //set control
     window.addEventListener("keydown", function (e) {
