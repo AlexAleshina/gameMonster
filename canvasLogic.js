@@ -131,9 +131,9 @@ class NotEat {
 }
 
 class Enemy {
-    constructor(src, startX, startY) {
+    constructor(startX, startY) {
         this.image = new Image();
-        this.image.src = src;
+        this.image.src = "enemy.png";
         this.x = startX;
         this.y = startY;
         this.startY = startY;
@@ -179,9 +179,9 @@ class Enemy {
 }
 
 class Heart {
-    constructor(src, startX, startY) {
+    constructor(startX, startY) {
         this.image = new Image();
-        this.image.src = src;
+        this.image.src = "heart.png";
         this.x = startX;
         this.y = startY;
         this.startY = startY;
@@ -231,56 +231,13 @@ class Heart {
 
 var lives = 3;
 var score = 0;
+
+const maxItemsOnScreen = 20;
+
 //
 window.onload = function () {
     let canvas = document.getElementById("canvas");
     let context = canvas.getContext("2d");
-    //
-    let mapLength = 5 * 1100;
-
-    function generateFood(src) {
-        let items = [];
-        for (let i = 0; i < 20; i++) {
-            let x = 1100 + Math.random() * mapLength;
-            let y = Math.random() * 700 - 50;
-            let item = new EatableObject(src, x, y);
-            items.push(item);
-        }
-        return items;
-    }
-
-    function generateMen(src) {
-        let items = [];
-        for (let i = 0; i < 10; i++) {
-            let x = 1100 + Math.random() * mapLength;
-            let y = Math.random() * 700 - 50;
-            let item = new NotEat(src, x, y);
-            items.push(item);
-        }
-        return items;
-    }
-
-    function generateHearts(src) {
-        let items = [];
-        for (let i = 0; i < 3; i++) {
-            let x = 1100 + Math.random() * mapLength;
-            let y = Math.random() * 700 - 50;
-            let item = new Heart(src, x, y);
-            items.push(item);
-        }
-        return items;
-    }
-
-    function generateEnemy(src) {
-        let items = [];
-        for (let i = 0; i < 2; i++) {
-            let x = 1100 + Math.random() * mapLength;
-            let y = Math.random() * 700 - 50;
-            let item = new Enemy(src, x, y);
-            items.push(item);
-        }
-        return items;
-    }
 
     //check collission
     function isCollission(a, b) {
@@ -292,15 +249,47 @@ window.onload = function () {
         );
     }
 
+    function generateNewObjects(count, score) {
+        // calculate probabilities
+        const burgersCount = 10 + Math.floor(score / 100) * 2.5;
+        const vegetablesCount = 10 + Math.floor(score / 100) * 2.5;
+        const menCount = 5 + Math.floor(score / 50) * 5;
+        const heartCount = 2 + Math.floor(score / 100);
+        const enemyCount = 1 + Math.floor(score / 50);
+
+        const totalCount = burgersCount + vegetablesCount + menCount + heartCount + enemyCount;
+
+        const burgerProb = burgersCount / totalCount;
+        const vegetablesProb = vegetablesCount / totalCount;
+        const menProb = menCount / totalCount;
+        const heartProb = heartCount / totalCount;
+        const enemyProb = enemyCount / totalCount;
+
+        // generate objects
+        const generateObject = () => {
+            const rndValue = Math.random();
+
+            let x = 1100 + Math.random() * 1100;
+            let y = Math.random() * 700 - 50;
+
+            if (rndValue <= burgerProb) return new EatableObject("burger.png", x, y);
+            if (rndValue <= burgerProb + vegetablesProb) return new EatableObject("veg1.png", x, y);
+            if (rndValue <= burgerProb + vegetablesProb + menProb) return new NotEat("man.png", x, y);
+            if (rndValue <= burgerProb + vegetablesProb + menProb + heartProb) return new Heart( x, y);
+            else return new Enemy(x, y);
+        }
+
+        let items = [];
+        for(let i = 0; i < count; i++){
+            items.push(generateObject());
+        }
+
+        return items;
+    }
+
     //create instances
     let player = new Player();
-    let objectsArray = [
-        generateFood("burger.png"),
-        generateFood("veg1.png"),
-        generateMen("man.png"),
-        generateEnemy("enemy.png"),
-        generateHearts("heart.png")
-    ].flat();
+    let objectsArray = generateNewObjects(20, score);
 
     /*
         
@@ -317,19 +306,22 @@ window.onload = function () {
         player.update(time);
         player.draw(context);
         
-
         for (let i = 0; i < objectsArray.length; i++) {
             objectsArray[i].update(time, player);
             objectsArray[i].draw(context);
             if (isCollission(player, objectsArray[i])) {
                 objectsArray[i].collide();
-                objectsArray.splice(i, 1);
             };
         }
 
         objectsArray = objectsArray.filter(obj => !obj.deleteMe);
+        const newItemsCount = maxItemsOnScreen - objectsArray.length;
+        if (newItemsCount > 0) {
+            const newItems = generateNewObjects(maxItemsOnScreen - objectsArray.length, score);
+            objectsArray = objectsArray.concat(newItems)
+        }
 
-        setTimeout(gameLoop, 20);
+        setTimeout(gameLoop, maxItemsOnScreen);
         time += 0.020;
     
         time += score / 50 * 0.009;
