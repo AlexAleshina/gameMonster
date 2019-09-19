@@ -4,18 +4,7 @@ body {
     padding: 0;
 }
 
-/*first page where choose*/
-.firstPage{
-    background-color: rgb(27, 223, 125);
-    height:100vh;
-    width: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 
-    display: none;/**/
-}
 
 /*button and form*/
 .btn{
@@ -27,15 +16,7 @@ body {
     margin: 20px;
 }
 
-.nameOfPlayer{
-    width:300px;
-    height: 100px;
-    background-color: rgb(255, 255, 255);
-    color: rgb(0, 0, 0);
-    font-size: 25px;
-    margin: 20px;
-    text-align: center;
-}
+
 
 /*main field*/
 .gameStartSecondPage{
@@ -61,11 +42,16 @@ body {
 
 /*attributes*/
 #score{
+    
+}
+
+.scorePoint{
+    font-size: 2.5em;
     padding: 30px;
 }
 
 #lives > img{
-    padding: 30px;
+    padding: 10px;
     width:70px;
 }
 

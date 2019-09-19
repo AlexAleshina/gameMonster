@@ -8,41 +8,23 @@
 </head>
 
 <body>
-    <section class="firstPage">
-        <div class="choosePlayers">
-            <div>
-                <button class="btn">1 Player</button>
-            </div>
-            <div>
-                <button class="btn">2 Players</button>
-            </div>
-        </div>
-        <div class="TypeName">
-            <div>
-                <form action="post">
-                    <input type="text" class="nameOfPlayer" value="name player1">
-                    <input type="text" class="nameOfPlayer" value="name player2">
-                </form>
-            </div>
-        </div>
-        <div class="beReadyToStart">
-            <div>
-                <button class="start btn">START</button>
-            </div>
-        </div>
-    </section>
 
     <section class="gameStartSecondPage">
 
         <div class="attributesLiveScore">
-            <div><span>SCORE</span><span id="score">0</span></div>
+            <div><span class = "scorePoint">SCORE</span><span id="score" class = "scorePoint" >0</span></div>
             <div>
                 <div id="lives"><img src="heart.png"><img src="heart.png"><img src="heart.png"></div>
             </div>
+    
+            <div>
+                <button id="start" class="btn">START</button>
+            </div>
+
         </div>
 
         <div id="gameField">
-            <canvas id="canvas" width="1100" height="700" ></canvas>
+            <canvas id="canvas" width="1100" height="700"></canvas>
             <!--<div id="characterMain1">
             </div>
             <div id="characterMain2">
@@ -53,8 +35,8 @@
     </section>
 
     <section class="endGameThirdPage">
-        <div><span class="theEnd whoWins">THE END</span></div>
-        <div><button class="btn">Start Again?</button></div>
+        <div><span class="theEnd">THE END</span></div>
+        <div><button id = "againStart" class="btn">Start Again?</button></div>
     </section>
 
 

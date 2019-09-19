@@ -323,7 +323,12 @@ window.onload = function () {
 
     }
 
-    gameLoop();
+    var start = document.getElementById("start");
+    console.log(start);
+    start.addEventListener("click", gameLoop);
+
+    var startAgain = document.getElementById("againStart");
+    startAgain.addEventListener("click", gameLoop);
 
     //set control
     window.addEventListener("keydown", function (e) {
