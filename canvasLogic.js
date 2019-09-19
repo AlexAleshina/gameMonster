@@ -223,6 +223,8 @@ class Heart {
             lives++;
             updateLives(lives);
         }
+        score = score + 20;
+        updateScore(score);
 
     }
 }
@@ -329,23 +331,9 @@ window.onload = function () {
 
         setTimeout(gameLoop, 20);
         time += 0.020;
-        levelUpdate();
-
-        function levelUpdate() {
-            if (score >= 250) {
-                time += 0.03;
-            } else if (score >= 200) {
-                time += 0.025;
-            } else if (score >= 150) {
-                time += 0.02;
-            } else if (score >= 100) {
-                time += 0.015;
-            } else if (score >= 50) {
-                time += 0.01;
-            } else if (score >= 20) {
-                time += 0.005;
-            } 
-        }
+    
+        time += score / 50 * 0.009;
+        
         
     }
 
