@@ -292,11 +292,13 @@ window.onload = function () {
 
     //create instances
     let player = new Player();
-    let burgers = generateFood("burger.png");
-    let vegetables = generateFood("veg1.png");
-    let men = generateMen("man.png");
-    let enemy = generateEnemy("enemy.png");
-    let heart = generateHearts("heart.png");
+    let objectsArray = [
+        generateFood("burger.png"),
+        generateFood("veg1.png"),
+        generateMen("man.png"),
+        generateEnemy("enemy.png"),
+        generateHearts("heart.png")
+    ].flat();
 
     /*
         
@@ -313,76 +315,28 @@ window.onload = function () {
         player.update(time);
         player.draw(context);
         
-        function processObjects(objectsArray) {
-            for (let i = 0; i < objectsArray.length; i++) {
-                objectsArray[i].update(time, player);
-                objectsArray[i].draw(context);
-                if (isCollission(player, objectsArray[i])) {
-                    objectsArray[i].collide();
-                    objectsArray.splice(i, 1);
-                };
-            }
-        }
 
-        processObjects(burgers);
-        processObjects(vegetables);
-        processObjects(men);
-        processObjects(enemy);
-        processObjects(heart);
-
-
-        /*
-
-        for (let i = 0; i < burgers.length; i++) {
-            burgers[i].update(time);
-            burgers[i].draw(context);
-            if (isCollission(player, burgers[i])) {
-                burgers[i].collide();
-                //burgers.splice(i, 1);
-            }
-        }
-
-        for (let i = 0; i < vegetables.length; i++) {
-            vegetables[i].update(time);
-            vegetables[i].draw(context);
-            if (isCollission(player, vegetables[i])) {
-                vegetables[i].collide();
-                vegetables.splice(i, 1);
+        for (let i = 0; i < objectsArray.length; i++) {
+            objectsArray[i].update(time, player);
+            objectsArray[i].draw(context);
+            if (isCollission(player, objectsArray[i])) {
+                objectsArray[i].collide();
+                objectsArray.splice(i, 1);
             };
         }
 
-        for (let i = 0; i < men.length; i++) {
-            men[i].update(time);
-            men[i].draw(context);
-            if (isCollission(player, men[i])) {
-                men[i].collide();
-            };
-        }
+        objectsArray = objectsArray.filter(function(obj) {
+            return !obj.deleteMe;
+        });
 
-        for (let i = 0; i < enemy.length; i++) {
-            enemy[i].update(time, player);
-            enemy[i].draw(context);
-            if (isCollission(player, enemy[i])) {
-                enemy[i].collide();
-            };
-        }
-
-        for (let i = 0; i < heart.length; i++) {
-            heart[i].update(time);
-            heart[i].draw(context);
-            if (isCollission(player, heart[i])) {
-                heart[i].collide();
-            };
-        }
-
-        */
+        console.log(`Items in objectsArray: ${objectsArray.length}`);
+        
 
         setTimeout(gameLoop, 20);
         time += 0.020;
         levelUpdate();
 
         function levelUpdate() {
-            debugger
             if (score >= 250) {
                 time += 0.045;
             } else if (score >= 200) {
