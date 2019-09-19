@@ -325,12 +325,7 @@ window.onload = function () {
             };
         }
 
-        objectsArray = objectsArray.filter(function(obj) {
-            return !obj.deleteMe;
-        });
-
-        console.log(`Items in objectsArray: ${objectsArray.length}`);
-        
+        objectsArray = objectsArray.filter(obj => !obj.deleteMe);
 
         setTimeout(gameLoop, 20);
         time += 0.020;
@@ -338,17 +333,17 @@ window.onload = function () {
 
         function levelUpdate() {
             if (score >= 250) {
-                time += 0.045;
+                time += 0.03;
             } else if (score >= 200) {
-                time += 0.040;
-            } else if (score >= 150) {
-                time += 0.035;
-            } else if (score >= 100) {
-                time += 0.030;
-            } else if (score >= 50) {
                 time += 0.025;
+            } else if (score >= 150) {
+                time += 0.02;
+            } else if (score >= 100) {
+                time += 0.015;
+            } else if (score >= 50) {
+                time += 0.01;
             } else if (score >= 20) {
-                time += 0.023;
+                time += 0.005;
             } 
         }
         
