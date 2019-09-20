@@ -30,19 +30,19 @@ function showEnd() {
     var end = document.getElementsByClassName("endGameThirdPage")[0];
     end.style.display = "flex";
 }
-function playMusictheEnd(){
+function playMusictheEnd() {
     let audioEl = document.getElementsByClassName("endMusic")[0];
     audioEl.play();
 }
-function playFoodCollide(){
+function playFoodCollide() {
     let audioEl = document.getElementsByClassName("food")[0];
     audioEl.play();
 }
-function playMenCollide(){
+function playMenCollide() {
     let audioEl = document.getElementsByClassName("men")[0];
     audioEl.play();
 }
-function playHeartCollide(){
+function playHeartCollide() {
     let audioEl = document.getElementsByClassName("heart")[0];
     audioEl.play();
 }
@@ -62,7 +62,7 @@ class Player {
 
     //update every frame (every 20 milisec) for bounce
     update(time) {
-        this.y = this.startY + 8 * Math.sin(2 * Math.PI * time/2);
+        this.y = this.startY + 8 * Math.sin(2 * Math.PI * time / 2);
     }
 
     // The method below draws the player's image
@@ -92,7 +92,7 @@ class EatableObject {
     }
 
     draw(context) {
-        if (this.show == true && this.x >= -65 && this.x < 1300 && this.y >= 0 && this.y <= 730) {
+        if (this.show == true && this.x >= -65 && this.x < 1250 && this.y >= 0 && this.y <= 700) {
             context.drawImage(this.image, this.x, this.y, this.height, this.width);
         }
     }
@@ -126,7 +126,7 @@ class NotEat {
     }
 
     draw(context) {
-        if (this.show == true && this.x >= -60 && this.x < 1300 && this.y >= 0 && this.y <= 730) {
+        if (this.show == true && this.x >= -60 && this.x < 1250 && this.y >= 0 && this.y <= 700) {
             context.drawImage(this.image, this.x, this.y, this.height, this.width);
         }
     }
@@ -172,11 +172,11 @@ class Enemy {
             this.startY -= 12 * timeDelta;
         }
 
-        this.y = this.startY + 5 * Math.sin(1 * Math.PI * time/2);
+        this.y = this.startY + 5 * Math.sin(1 * Math.PI * time / 2);
     }
 
     draw(context) {
-        if (this.show == true && this.x >= -90 && this.x < 1300) {
+        if (this.show == true && this.x >= -90 && this.x < 1250) {
             context.drawImage(this.image, this.x, this.y, this.height, this.width);
         }
     }
@@ -214,11 +214,11 @@ class Heart {
             this.deleteMe = true;
         };
         this.x -= speed * timeDelta;
-        this.y = this.startY + 1 * Math.sin(4 * Math.PI * time/2);
+        this.y = this.startY + 1 * Math.sin(4 * Math.PI * time / 2);
     }
 
     draw(context) {
-        if (this.show == true && this.x >= -60 && this.x < 1300 && this.y >= 0 && this.y <= 730) {
+        if (this.show == true && this.x >= -60 && this.x < 1250 && this.y >= 0 && this.y <= 700) {
 
             context.save();
             context.translate(this.x, this.y);
@@ -287,8 +287,8 @@ window.onload = function () {
 
         // generate objects
         function generateObject() {
-            const x = 1300 + Math.random() * 1300;
-            const y = Math.random() * 730 - 70;
+            const x = 1250 + Math.random() * 1250;
+            const y = Math.random() * 700 - 70;
 
             const rndValue = Math.random();
             if (rndValue <= burgerProb) return new EatableObject("burger.png", x, y);
@@ -315,7 +315,7 @@ window.onload = function () {
     let timeDelta = 0;
 
     function gameLoop() {
-        context.clearRect(0, 0, 1300, 730);
+        context.clearRect(0, 0, 1250, 700);
 
         // here you can draw EVERYTHING!!!
         player.update(time);
@@ -342,7 +342,7 @@ window.onload = function () {
         }
 
         timeDelta = 0.020;
-        timeDelta += score / 50 *0.009;
+        timeDelta += score / 50 * 0.009;
         time += timeDelta;
     }
 
@@ -356,7 +356,6 @@ window.onload = function () {
         location.reload();
     });
 
-
     //set control
     window.addEventListener("keydown", function (e) {
         switch (e.key) {
@@ -366,13 +365,12 @@ window.onload = function () {
                 }
                 break;
             case 'ArrowDown':
-                if (player.y + player.height + 20 <= 730) {
+                if (player.y + player.height + 20 <= 700) {
                     player.startY += 20
                 }
                 break;
         }
     });
-
 
     canvas.addEventListener("mousemove", function (e) {
         var rect = e.target.getBoundingClientRect();
