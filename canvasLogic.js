@@ -167,9 +167,9 @@ class Enemy {
         this.x -= (speed * 2) * timeDelta;
 
         if (player.y > this.startY) {
-            this.startY += 12 * timeDelta;
+            this.startY += 20 * timeDelta;
         } else if (player.y < this.startY) {
-            this.startY -= 12 * timeDelta;
+            this.startY -= 20 * timeDelta;
         }
 
         this.y = this.startY + 5 * Math.sin(1 * Math.PI * time / 2);
