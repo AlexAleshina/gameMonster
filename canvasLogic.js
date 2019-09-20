@@ -1,5 +1,6 @@
 function updateScore(score) {
     document.getElementById("score").innerHTML = score;
+    document.getElementById("scoreEnd").innerHTML = score;
 }
 
 function updateLives(lives) {
@@ -14,26 +15,38 @@ function updateLives(lives) {
 }
 
 function hideStart() {
-    var end = document.getElementsByClassName("gameStartMainPage")[0];
-    var endHidden = end.style.display = "none";
+    var start = document.getElementsByClassName("gameStartMainPage")[0];
+    start.style.display = "none";
 }
 function showStart() {
-    var end = document.getElementsByClassName("gameStartMainPage")[0];
-    var endHidden = end.style.display = "flex";
+    var start = document.getElementsByClassName("gameStartMainPage")[0];
+    start.style.display = "flex";
 }
 function hideEnd() {
     var end = document.getElementsByClassName("endGameThirdPage")[0];
-    var endHidden = end.style.display = "none";
+    end.style.display = "none";
 }
-
 function showEnd() {
     var end = document.getElementsByClassName("endGameThirdPage")[0];
-    var endHidden = end.style.display = "flex";
+    end.style.display = "flex";
+}
+function playMusictheEnd(){
+    let audioEl = document.getElementsByClassName("endMusic")[0];
+    audioEl.play();
+}
+function playFoodCollide(){
+    let audioEl = document.getElementsByClassName("food")[0];
+    audioEl.play();
+}
+function playMenCollide(){
+    let audioEl = document.getElementsByClassName("men")[0];
+    audioEl.play();
+}
+function playHeartCollide(){
+    let audioEl = document.getElementsByClassName("heart")[0];
+    audioEl.play();
 }
 
-
-
-var increase = 30;
 
 
 class Player {
@@ -49,7 +62,7 @@ class Player {
 
     //update every frame (every 20 milisec) for bounce
     update(time) {
-        this.y = this.startY + 8 * Math.sin(2 * Math.PI * time);
+        this.y = this.startY + 8 * Math.sin(2 * Math.PI * time/2);
     }
 
     // The method below draws the player's image
@@ -64,22 +77,22 @@ class EatableObject {
         this.image.src = src;
         this.x = startX;
         this.y = startY;
-        this.startX = startX;
         this.show = true;
         this.height = 65;
         this.width = 65;
         this.deleteMe = false;
     }
 
-    update(time) {
-        if(this.x < -65){
+    update(time, player, timeDelta) {
+        if (this.x < -65) {
             this.deleteMe = true;
         };
-        this.x = this.startX - (2* increase) * time;
+
+        this.x -= 2 * speed * timeDelta;
     }
 
     draw(context) {
-        if (this.show == true && this.x >= -65 && this.x < 1100 && this.y >= 0 && this.y <= 700) {
+        if (this.show == true && this.x >= -65 && this.x < 1300 && this.y >= 0 && this.y <= 730) {
             context.drawImage(this.image, this.x, this.y, this.height, this.width);
         }
     }
@@ -89,6 +102,7 @@ class EatableObject {
         score = score + 10;
         updateScore(score);
         this.deleteMe = true;
+        playFoodCollide();
     }
 }
 
@@ -98,22 +112,21 @@ class NotEat {
         this.image.src = src;
         this.x = startX;
         this.y = startY;
-        this.startX = startX;
         this.show = true;
         this.height = 60;
         this.width = 60;
         this.deleteMe = false;
     }
 
-    update(time) {
-        if(this.x < -60){
+    update(time, player, timeDelta) {
+        if (this.x < -60) {
             this.deleteMe = true;
         };
-        this.x = this.startX - (increase * 2) * time;
+        this.x -= (speed * 2) * timeDelta;
     }
 
     draw(context) {
-        if (this.show == true && this.x >= -60 && this.x < 1100 && this.y >= 0 && this.y <= 700) {
+        if (this.show == true && this.x >= -60 && this.x < 1300 && this.y >= 0 && this.y <= 730) {
             context.drawImage(this.image, this.x, this.y, this.height, this.width);
         }
     }
@@ -121,10 +134,13 @@ class NotEat {
         this.show = false;
         this.deleteMe = true;
         lives--;
+        playMenCollide();
         updateLives(lives);
         if (lives <= 0) {
+            isPlaying = false;
             hideStart();
             showEnd();
+            playMusictheEnd();
         };
 
     }
@@ -137,30 +153,30 @@ class Enemy {
         this.x = startX;
         this.y = startY;
         this.startY = startY;
-        this.startX = startX;
         this.show = true;
         this.height = 90;
         this.width = 90;
         this.deleteMe = false;
     }
 
-    update(time, player) {
-        if(this.x < -90){
+    update(time, player, timeDelta) {
+        if (this.x < -90) {
             this.deleteMe = true;
         };
-        this.x = this.startX - (increase * 2) * time;
+
+        this.x -= (speed * 2) * timeDelta;
 
         if (player.y > this.startY) {
-            this.startY += 0.7;
+            this.startY += 12 * timeDelta;
         } else if (player.y < this.startY) {
-            this.startY -= 0.7;
+            this.startY -= 12 * timeDelta;
         }
 
-        this.y = this.startY + 5 * Math.sin(1 * Math.PI * time);
+        this.y = this.startY + 5 * Math.sin(1 * Math.PI * time/2);
     }
 
     draw(context) {
-        if (this.show == true && this.x >= -90 && this.x < 1100) {
+        if (this.show == true && this.x >= -90 && this.x < 1300) {
             context.drawImage(this.image, this.x, this.y, this.height, this.width);
         }
     }
@@ -169,8 +185,10 @@ class Enemy {
         this.deleteMe = true;
         lives -= 3;
         if (lives <= 0) {
+            isPlaying = false;
             hideStart();
             showEnd();
+            playMusictheEnd();
         };
         //alert("die")
         //score[0] += 10;
@@ -185,23 +203,22 @@ class Heart {
         this.x = startX;
         this.y = startY;
         this.startY = startY;
-        this.startX = startX;
         this.show = true;
-        this.height = 50;
-        this.width = 50;
+        this.height = 55;
+        this.width = 55;
         this.deleteMe = false;
     }
 
-    update(time) {
-        if(this.x < -50){
+    update(time, player, timeDelta) {
+        if (this.x < -50) {
             this.deleteMe = true;
         };
-        this.x = this.startX - increase * time;
-        this.y = this.startY + 1 * Math.sin(4 * Math.PI * time);
+        this.x -= speed * timeDelta;
+        this.y = this.startY + 1 * Math.sin(4 * Math.PI * time/2);
     }
 
     draw(context) {
-        if (this.show == true && this.x >= -60 && this.x < 1100 && this.y >= 0 && this.y <= 700) {
+        if (this.show == true && this.x >= -60 && this.x < 1300 && this.y >= 0 && this.y <= 730) {
 
             context.save();
             context.translate(this.x, this.y);
@@ -219,6 +236,7 @@ class Heart {
     collide() {
         this.show = false;
         this.deleteMe = true;
+        playHeartCollide();
         if (lives < 3) {
             lives++;
             updateLives(lives);
@@ -229,8 +247,10 @@ class Heart {
     }
 }
 
-var lives = 3;
-var score = 0;
+var speed = 30;
+let lives = 3;
+let score = 0;
+let isPlaying = true;
 
 const maxItemsOnScreen = 20;
 
@@ -266,21 +286,20 @@ window.onload = function () {
         const enemyProb = enemyCount / totalCount;
 
         // generate objects
-        const generateObject = () => {
+        function generateObject() {
+            const x = 1300 + Math.random() * 1300;
+            const y = Math.random() * 730 - 70;
+
             const rndValue = Math.random();
-
-            let x = 1100 + Math.random() * 1100;
-            let y = Math.random() * 700 - 50;
-
             if (rndValue <= burgerProb) return new EatableObject("burger.png", x, y);
             if (rndValue <= burgerProb + vegetablesProb) return new EatableObject("veg1.png", x, y);
             if (rndValue <= burgerProb + vegetablesProb + menProb) return new NotEat("man.png", x, y);
-            if (rndValue <= burgerProb + vegetablesProb + menProb + heartProb) return new Heart( x, y);
+            if (rndValue <= burgerProb + vegetablesProb + menProb + heartProb) return new Heart(x, y);
             else return new Enemy(x, y);
         }
 
         let items = [];
-        for(let i = 0; i < count; i++){
+        for (let i = 0; i < count; i++) {
             items.push(generateObject());
         }
 
@@ -289,25 +308,21 @@ window.onload = function () {
 
     //create instances
     let player = new Player();
-    let objectsArray = generateNewObjects(20, score);
+    let objectsArray = generateNewObjects(maxItemsOnScreen, score);
 
-    /*
-        
-        function checkLives() {
-            document.getElementById("lives").innerHTML = this.lives
-        }
-    */
     //
     let time = 0;
+    let timeDelta = 0;
+
     function gameLoop() {
-        context.clearRect(0, 0, 1100, 700);
+        context.clearRect(0, 0, 1300, 730);
 
         // here you can draw EVERYTHING!!!
         player.update(time);
         player.draw(context);
-        
+
         for (let i = 0; i < objectsArray.length; i++) {
-            objectsArray[i].update(time, player);
+            objectsArray[i].update(time, player, timeDelta);
             objectsArray[i].draw(context);
             if (isCollission(player, objectsArray[i])) {
                 objectsArray[i].collide();
@@ -315,28 +330,29 @@ window.onload = function () {
         }
 
         objectsArray = objectsArray.filter(obj => !obj.deleteMe);
+
         const newItemsCount = maxItemsOnScreen - objectsArray.length;
         if (newItemsCount > 0) {
-            const newItems = generateNewObjects(maxItemsOnScreen - objectsArray.length, score);
+            const newItems = generateNewObjects(newItemsCount, score);
             objectsArray = objectsArray.concat(newItems)
         }
 
-        setTimeout(gameLoop, maxItemsOnScreen);
-        time += 0.020;
-    
-        time += score / 50 * 0.009;
-        
-        
+        if (isPlaying) {
+            setTimeout(gameLoop, 20);
+        }
+
+        timeDelta = 0.020;
+        timeDelta += score / 50 *0.009;
+        time += timeDelta;
     }
 
     var start = document.getElementById("start");
-    start.addEventListener("click", function() {
+    start.addEventListener("click", function () {
         gameLoop();
     });
 
     var startAgain = document.getElementById("againStart");
-    startAgain.addEventListener("click", function(){
-        gameLoop();
+    startAgain.addEventListener("click", function () {
         location.reload();
     });
 
@@ -350,10 +366,17 @@ window.onload = function () {
                 }
                 break;
             case 'ArrowDown':
-                if (player.y + player.height + 20 <= 700) {
+                if (player.y + player.height + 20 <= 730) {
                     player.startY += 20
                 }
                 break;
         }
+    });
+
+
+    canvas.addEventListener("mousemove", function (e) {
+        var rect = e.target.getBoundingClientRect();
+        var y = e.clientY - rect.top;
+        player.startY = y - player.height / 2;
     });
 }

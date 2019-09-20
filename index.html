@@ -12,19 +12,33 @@
     <section class="gameStartMainPage">
 
         <div class="attributesLiveScore">
-            <div class = "scorePoint">SCORE</div><div id="score" class = "scorePoint" >0</div>
+            <div class="scorePoint">SCORE</div>
+            <div id="score" class="scorePoint">0</div>
             <div>
                 <div id="lives"><img src="heart.png"><img src="heart.png"><img src="heart.png"></div>
             </div>
-    
+
             <div>
                 <button id="start" class="btn">START</button>
+            </div>
+
+            <div>
+                <img src="yeti2.png" class="yeti">
+            </div>
+            <h2>SOME RULES:</h2>
+            <div class="rules">
+                <ul>
+                    <li>Eat burgers and broccoli</li>
+                    <li>Do not eat humans!</li>
+                    <li>Pay attention to other bigfoots: they are not friendly</li>
+                    
+                </ul>                
             </div>
 
         </div>
 
         <div id="gameField">
-            <canvas id="canvas" width="1100" height="700"></canvas>
+            <canvas id="canvas" width="1300" height="730"></canvas>
             <!--<div id="characterMain1">
             </div>
             <div id="characterMain2">
@@ -35,9 +49,24 @@
     </section>
 
     <section class="endGameThirdPage">
+            <audio class = "endMusic">
+                    <source src="gameover.mp3"></source>
+            </audio>        
         <div><span class="theEnd">GAME OVER</span></div>
-        <div><button id = "againStart" class="btn">Again?</button></div>
+        <div class="scorePoint">SCORE</div>
+        <div id="scoreEnd" class="scorePoint">0</div>
+        <div><button id="againStart" class="btn">Again?</button></div>
     </section>
+
+    <audio class="food">
+        <source src="food.mp3"></source>
+    </audio>
+    <audio class="men">
+            <source src="mencollide.mp3"></source>
+    </audio>
+    <audio class="heart">
+            <source src="heartcollide.mp3"></source>
+    </audio>
 
 
     <!--<script src="script.js"></script>

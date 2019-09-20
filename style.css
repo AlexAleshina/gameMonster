@@ -2,13 +2,14 @@ body {
     font-size: 25px;
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 
 
 /*button and form*/
 .btn{
-    width:160px;
+    width:230px;
     height: 50px;
     background-color: rgb(3, 4, 73);
     color: rgb(209, 209, 217);
@@ -43,15 +44,43 @@ body {
 
 /*main field*/
 .gameStartMainPage{
-    background: linear-gradient(45deg, rgb(68, 68, 68), rgb(216, 231, 238));
+    background: linear-gradient(45deg, rgb(61, 61, 61), rgb(216, 231, 238));
     display: flex;
     color: rgb(209, 209, 217);;
     height: 100vh;
     align-items: flex-start;
+    justify-content: space-around;
+}
+
+
+.yeti{
+    position: absolute;
+    left:190px;
+    top:530px;
+    height: 240px;
+    width: 280px;
+}
+.rules{
+    padding-left: 5px;
+    font-size: 0.7em;
+    
+}
+h2{
+    text-align: center;
+    padding-bottom: none;
+}
+
+ul{
+    list-style: none;
+    border:3px solid rgb(35, 37, 37);
+    border-radius: 15px;
+}
+li{
+    padding:5px 5px;
 }
 
 .attributesLiveScore{
-    margin: 20px;
+    margin: 30px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -59,25 +88,18 @@ body {
     align-items: center;
 }
 #gameField{
-    margin: 20px;
     border:5px solid rgb(35, 37, 37);
     border-radius: 10px;
     display: flex;
-    box-shadow:
-   0 0 1px rgba(0,0,0,.5) inset,
-   0 2px 3px rgba(0,0,0,.5) inset,
-   0 1px 1px rgba(255,255,255,.1);
-    
+    margin-right: 50px;
+    margin-top: 30px;
 }
 #canvas{
-    background: url("back.jpg") 99% 60% no-repeat;
-    
+    background: url("back.jpg") 70% 50% no-repeat;
 }
 
 /*attributes*/
-#score{
-    
-}
+
 
 .scorePoint{
     font-size: 2em;
@@ -86,7 +108,7 @@ body {
 
 #lives > img{
     padding: 10px;
-    width:30px;
+    width:35px;
 }
 
 
@@ -100,6 +122,9 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     display: none;
+}
+.theEnd{
+    font-size: 2em;
+    padding: 10px;
 }
